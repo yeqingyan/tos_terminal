@@ -18,7 +18,7 @@ class GpioPins():
           
     def get_input(self):
         """Get value from input channels"""
-        return [GPIO.input(channel) for channel in self.input_channels]
+        return [str(GPIO.input(channel)) for channel in self.input_channels]
                 
         
     def __init__(self, input_channels=None, output_channels=None):
