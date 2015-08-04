@@ -1,24 +1,31 @@
 from Tkinter import *
-from threading import Thread
+#from threading import Thread
 import time
 import logging
 
 from gpio.gpiopins import GpioPins
 
+TERMINAL_INPUT = [14, 15]
+TERMINAL_OUTPUT = [2,3]
+TERMINAL_STATUS = 9
+TOS_STATUS = 7
+
 class Application(Frame):
     
+    '''
     def WriteToOutput(self):
         while not self.done:
             inputs = "TOS> " + "".join(self.comm.get_input()) + "\n"
             self.TerminalOutput.insert(END, inputs)
             self.TerminalOutput.see(END)
             time.sleep(2)
-        
+     
     def CreateDaemon(self):
         self.thread.start()
         
     def QuitDaemon(self):
         self.done = True
+    '''   
         
     def CreateTerminalOuput(self):
         self.TerminalOutputLabel = Label(self, text="Output:")
@@ -30,8 +37,8 @@ class Application(Frame):
         self.TerminalOutput["yscrollcommand"] = self.scrollbar.set
         
     def sendText(self):
-        text = "TOS> {0}\n".format(self.InputString.get())
-        inputs = "TOS> " + "".join(self.comm.get_input()) + "\n"
+        input_text = self.InputString.get()
+        inputs = "TOS> {0}\n".format(self.comm.get_reply(input_text))
         self.TerminalOutput.insert(END, inputs)
         self.TerminalOutput.see(END)
         logger.debug("Insert string {0}".format(self.InputString.get()))
@@ -40,6 +47,9 @@ class Application(Frame):
     def keyEvent(self, event):
         if event.keysym == 'Return':
             self.sendText()
+            
+    def cleanup(self):
+        self.comm.cleanup()
         
     def CreateTerminalInput(self):
         self.InputString = StringVar()
@@ -57,8 +67,8 @@ class Application(Frame):
         self.pack()
         self.CreateTerminalOuput()
         self.CreateTerminalInput()
-        self.comm = GpioPins(input_channels=[1], output_channels=[5,6,7,8])
-        self.thread = Thread(target=self.WriteToOutput)
+        self.comm = GpioPins(input_channels=TERMINAL_INPUT, output_channels=TERMINAL_OUTPUT, terminal_status_channel=TERMINAL_STATUS, tos_status_channel=TOS_STATUS)
+        #self.thread = Thread(target=self.WriteToOutput)
         self.done = False
 
 if __name__ == "__main__":
@@ -67,7 +77,9 @@ if __name__ == "__main__":
     root = Tk()
     root.title("TOS Terminal")
     app = Application(master=root)
-    app.CreateDaemon()
+    #app.CreateDaemon()
     app.mainloop()
-    app.QuitDaemon()
+    #app.QuitDaemon()
+    app.cleanup()
+    
     

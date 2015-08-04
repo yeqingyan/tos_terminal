@@ -1,0 +1,6 @@
+# Terminal Status
+MSG_SENT = 1
+MSG_CLEAR = 0
+# TOS Status
+MSG_RECEIVED = 1
+MSG_REPLIED = 0
