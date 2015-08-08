@@ -28,7 +28,7 @@ class GpioPins():
         self.input_channels = channels
           
     def get_reply(self, send_msg):
-        '''
+        
         reply_msg = ""
         for char in send_msg:
             # Step 1. SendMessage 
@@ -65,9 +65,11 @@ class GpioPins():
             GPIO.output(channel, value)
             
         # Step 2. Set Terminal Status to MSG_SENT
+        print "Send {0} to pin {1}".format(TosMsg.MSG_SENT, self.terminal_status_channel)
         GPIO.output(self.terminal_status_channel, TosMsg.MSG_SENT)
         
         # Step 3. Check until Tos got msg (Tos Status == MSG_RECEIVED)
+        print "Pin {1} value is {0}".format(GPIO.input(self.tos_status_channel), self.tos_status_channel)
         while GPIO.input(self.tos_status_channel) != TosMsg.MSG_RECEIVED:
             continue
         
@@ -81,6 +83,7 @@ class GpioPins():
         # Step 6. Got reply message and return 
         """Get value from input channels"""
         return [str(GPIO.input(channel)) for channel in self.input_channels]
+	'''
         
         
     def __init__(self, input_channels=None, output_channels=None, terminal_status_channel=None, tos_status_channel=None):

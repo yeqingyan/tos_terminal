@@ -10,4 +10,5 @@ def bin_to_char(bin_values):
         result += bin_values[i] << j
     if result > 127:
         result = 0
+    print "Receive char {0}".format(result)
     return chr(result)    
