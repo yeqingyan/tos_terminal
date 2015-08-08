@@ -5,8 +5,8 @@ import logging
 
 from gpio.gpiopins import GpioPins
 
-TERMINAL_INPUT = [14, 15]
-TERMINAL_OUTPUT = [4,17]
+TERMINAL_INPUT = [14, 15, 18, 23, 24, 25, 8]
+TERMINAL_OUTPUT = [2, 3, 4, 17, 27, 22, 10]
 TERMINAL_STATUS = 9
 TOS_STATUS = 7
 
@@ -42,6 +42,7 @@ class Application(Frame):
         self.TerminalOutput.insert(END, inputs)
         self.TerminalOutput.see(END)
         logger.debug("Insert string {0}".format(self.InputString.get()))
+        self.TerminalInput.delete(0, END)
         
         
     def keyEvent(self, event):
