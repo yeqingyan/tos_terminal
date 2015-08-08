@@ -6,7 +6,7 @@ import logging
 from gpio.gpiopins import GpioPins
 
 TERMINAL_INPUT = [14, 15]
-TERMINAL_OUTPUT = [2,3]
+TERMINAL_OUTPUT = [4,17]
 TERMINAL_STATUS = 9
 TOS_STATUS = 7
 

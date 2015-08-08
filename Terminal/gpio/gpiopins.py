@@ -1,4 +1,5 @@
-import RPI_stub as GPIO
+import RPi.GPIO as GPIO
+#import RPI_stub as GPIO
 import TosMsg
 
 class GpioPins():
@@ -21,15 +22,15 @@ class GpioPins():
             raise TypeError('Channels should be list type')
         
         for channel in channels:
-            GPIO.setup(channel, GPIO.IN)
+            GPIO.setup(channel, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
         
         self.input_channels = channels
           
     def get_reply(self, send_msg):
         # Step 1. SendMessage 
         output_list = [int(value) for value in "{0:0=2b}".format(ord(send_msg[0]) % 4)]
-        print "Send message {0}".format(output_list)
         for channel, value in zip(self.output_channels, output_list):
+            print "Send message {0} to pin {1}".format(value, channel)
             GPIO.output(channel, value)
             
         # Step 2. Set Terminal Status to MSG_SENT
@@ -53,8 +54,8 @@ class GpioPins():
         
     def __init__(self, input_channels=None, output_channels=None, terminal_status_channel=None, tos_status_channel=None):
         GPIO.setmode(GPIO.BCM)
-        self.setup_input(input_channels)
-        self.setup_output(output_channels)
+        self.setup_input(input_channels+[tos_status_channel])
+        self.setup_output(output_channels+[terminal_status_channel])
         self.input_channels = input_channels
         self.output_channels = output_channels
         self.terminal_status_channel = terminal_status_channel
