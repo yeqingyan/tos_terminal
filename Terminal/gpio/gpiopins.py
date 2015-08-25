@@ -52,7 +52,7 @@ class GpioPins():
                     continue
                 # Change terminal status to idle
                 GPIO.output(self.terminal_write, TosMsg.IDLE)
-            
+            print "Send finished"
             # Read  
             reply_bin = []
             for _ in xrange(8):
@@ -71,6 +71,7 @@ class GpioPins():
                     continue
                 # Finish read 
                 GPIO.output(self.terminal_read, TosMsg.IDLE)
+            print "Read message {0}".format(reply_bin)
             # Got reply message and return 
             reply_msg += utils.bin_to_char(reply_bin)
         return reply_msg
