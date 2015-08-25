@@ -40,9 +40,8 @@ class Application(Frame):
         
     def sendText(self):
         input_text = self.InputString.get()
-        inputs = "TOS> {0}".format(self.comm.get_reply(input_text))
+        inputs = "TOS> {0}\n".format(self.comm.get_reply(input_text))
         self.TerminalOutput.insert(END, inputs)
-        self.TerminalOutput.insert(END, '\n')
         #self.TerminalOutput.insert(END, self.InputString.get())
         self.TerminalOutput.see(END)
         logger.debug("Insert string {0}".format(self.InputString.get()))

@@ -6,7 +6,8 @@ def char_to_bin(char):
     
 def bin_to_char(bin_values):
     result = 0
-    print bin_values
+    print "Got value {0}".format(bin_values)
+    bin_values = bin_values[::-1]
     for i,j in zip(xrange(0, 8), xrange(7, -1, -1)):
         result += bin_values[i] << j
     if result > 255:

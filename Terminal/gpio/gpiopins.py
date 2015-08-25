@@ -31,28 +31,30 @@ class GpioPins():
     def get_reply(self, send_msg):
         
         reply_msg = ""
-        for char in send_msg:
-            # Step 1. Convert char to binary 
-            output_values = utils.char_to_bin(char)
-            print "Send message {0}".format(output_values)
-            # Write
-            for bit in output_values:
-                if GPIO.input(self.terminal_write) != TosMsg.IDLE:
-                    print "Error! TERMINAL_WRITE channel is not idle!"
-                    return 
-                
-                # Wait TOS ready
-                while GPIO.input(self.tos_read) != TosMsg.IDLE:
-                    continue
-                GPIO.output(self.output_bits, bit)
-                # Update terminal status, inform TOS to receive
-                GPIO.output(self.terminal_write, TosMsg.MSG_SENT)
-                # Wait TOS to finish read 
-                while GPIO.input(self.tos_read) == TosMsg.IDLE:
-                    continue
-                # Change terminal status to idle
-                GPIO.output(self.terminal_write, TosMsg.IDLE)
-            print "Send finished"
+	done = False
+        while done == False:
+	#for char in send_msg:
+            ## Step 1. Convert char to binary 
+            #output_values = utils.char_to_bin(char)
+            #print "Send message {0}".format(output_values)
+            ## Write
+            #for bit in output_values:
+            #    if GPIO.input(self.terminal_write) != TosMsg.IDLE:
+            #        print "Error! TERMINAL_WRITE channel is not idle!"
+            #        return 
+            #    
+            #    # Wait TOS ready
+            #    while GPIO.input(self.tos_read) != TosMsg.IDLE:
+            #        continue
+            #    GPIO.output(self.output_bits, bit)
+            #    # Update terminal status, inform TOS to receive
+            #    GPIO.output(self.terminal_write, TosMsg.MSG_SENT)
+            #    # Wait TOS to finish read 
+            #    while GPIO.input(self.tos_read) == TosMsg.IDLE:
+            #        continue
+            #    # Change terminal status to idle
+            #    GPIO.output(self.terminal_write, TosMsg.IDLE)
+            #print "Send finished"
             # Read  
             reply_bin = []
             for _ in xrange(8):
@@ -74,6 +76,8 @@ class GpioPins():
             print "Read message {0}".format(reply_bin)
             # Got reply message and return 
             reply_msg += utils.bin_to_char(reply_bin)
+	    if reply_msg[-1] == '\0':
+		done = True
         return reply_msg
              
         '''
