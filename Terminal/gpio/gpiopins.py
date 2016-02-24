@@ -1,5 +1,5 @@
-import RPi.GPIO as GPIO
-#import RPI_stub as GPIO
+#import RPi.GPIO as GPIO
+import RPI_qemu as GPIO
 import TosMsg
 import utils
 
@@ -31,7 +31,7 @@ class GpioPins():
     def get_reply(self, send_msg):
         
         reply_msg = ""
-	done = False
+        done = False
         while done == False:
 	#for char in send_msg:
             ## Step 1. Convert char to binary 
@@ -73,7 +73,7 @@ class GpioPins():
                     continue
                 # Finish read 
                 GPIO.output(self.terminal_read, TosMsg.IDLE)
-            print "Read message {0}".format(reply_bin)
+            #print "Read message {0}".format(reply_bin)
             # Got reply message and return 
             reply_msg += utils.bin_to_char(reply_bin)
 	    if reply_msg[-1] == '\0':

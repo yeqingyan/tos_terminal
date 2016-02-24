@@ -5,12 +5,14 @@ import logging
 
 from gpio.gpiopins import GpioPins
 
+# INPUT
 TOS_IN_BITS = 14
-TOS_WRITE_STATUS = 15
-TOS_READ_STATUS = 18
+TOS_IN_WRITE_STATUS = 15
+TOS_IN_READ_STATUS = 18
+# OUTPUT
 TERMINAL_OUT_BITS = 25
-TERMINAL_WRITE_STATUS = 8
-TERMINAL_READ_STATUS = 7
+TERMINAL_OUT_WRITE_STATUS = 8
+TERMINAL_OUT_READ_STATUS = 7
 
 class Application(Frame):
     
@@ -60,7 +62,7 @@ class Application(Frame):
         self.InputString = StringVar()
         self.TerminalIutputLabel = Label(self, text="Input:")
         self.TerminalInput = Entry(self, width="100", textvariable=self.InputString)
-        self.SendButton = Button(self, text="Send", command=self.sendText)
+        self.SendButton = Button(self, text="Get", command=self.sendText)
         self.TerminalInput.bind("<Return>", self.keyEvent)
         self.TerminalIutputLabel.grid(row=2, sticky=NW)
         self.TerminalInput.grid(row=3, column=0, padx=5, pady=2)
@@ -72,7 +74,7 @@ class Application(Frame):
         self.pack()
         self.CreateTerminalOuput()
         self.CreateTerminalInput()
-        self.comm = GpioPins(input_bits=TOS_IN_BITS, output_bits=TERMINAL_OUT_BITS, tos_read=TOS_READ_STATUS, tos_write=TOS_WRITE_STATUS, terminal_read=TERMINAL_READ_STATUS, terminal_write=TERMINAL_WRITE_STATUS)
+        self.comm = GpioPins(input_bits=TOS_IN_BITS, output_bits=TERMINAL_OUT_BITS, tos_read=TOS_IN_READ_STATUS, tos_write=TOS_IN_WRITE_STATUS, terminal_read=TERMINAL_OUT_READ_STATUS, terminal_write=TERMINAL_OUT_WRITE_STATUS)
         #self.thread = Thread(target=self.WriteToOutput)
         self.done = False
 
