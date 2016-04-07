@@ -61,7 +61,7 @@ class GpioPins():
                 if GPIO.input(self.terminal_read) != TosMsg.IDLE:
                     print "Error!, TERMINAL_READ channel is not idle!"
                     return
-                # Wait Tos to write message
+                # Wait Tos to write message 
                 while GPIO.input(self.tos_write) == TosMsg.IDLE:
                     continue
                 # Construct message
@@ -119,6 +119,7 @@ class GpioPins():
         self.tos_write = tos_write
         self.terminal_read = terminal_read
         self.terminal_write = terminal_write
+        #self.tos_write_event = threading.Event()
         
     def cleanup(self):
         GPIO.cleanup()

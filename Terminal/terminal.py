@@ -1,5 +1,5 @@
 from Tkinter import *
-#from threading import Thread
+from threading import Thread
 import time
 import logging
 
@@ -16,21 +16,20 @@ TERMINAL_OUT_READ_STATUS = 7
 
 class Application(Frame):
     
-    '''
     def WriteToOutput(self):
         while not self.done:
-            inputs = "TOS> " + "".join(self.comm.get_input()) + "\n"
+            inputs = "TOS> " + "".join(self.comm.get_reply("")) + "\n"
             self.TerminalOutput.insert(END, inputs)
             self.TerminalOutput.see(END)
-            time.sleep(2)
-     
+            time.sleep(10)
+    
+    ''' 
     def CreateDaemon(self):
         self.thread.start()
         
     def QuitDaemon(self):
-        self.done = True
-    '''   
-        
+        self.done = True       
+    '''    
     def CreateTerminalOuput(self):
         self.TerminalOutputLabel = Label(self, text="Output:")
         self.TerminalOutput = Text(self, width="100", height="15", bg="grey") 
@@ -56,26 +55,27 @@ class Application(Frame):
             self.sendText()
             
     def cleanup(self):
+        self.done = True
         self.comm.cleanup()
         
     def CreateTerminalInput(self):
         self.InputString = StringVar()
         self.TerminalIutputLabel = Label(self, text="Input:")
         self.TerminalInput = Entry(self, width="100", textvariable=self.InputString)
+        '''
         self.SendButton = Button(self, text="Get", command=self.sendText)
         self.TerminalInput.bind("<Return>", self.keyEvent)
         self.TerminalIutputLabel.grid(row=2, sticky=NW)
         self.TerminalInput.grid(row=3, column=0, padx=5, pady=2)
         self.SendButton.grid(row=3, column=1)
-        
-
+        '''
     def __init__(self, master=None):
         Frame.__init__(self, master)
         self.pack()
         self.CreateTerminalOuput()
-        self.CreateTerminalInput()
+        #self.CreateTerminalInput()
         self.comm = GpioPins(input_bits=TOS_IN_BITS, output_bits=TERMINAL_OUT_BITS, tos_read=TOS_IN_READ_STATUS, tos_write=TOS_IN_WRITE_STATUS, terminal_read=TERMINAL_OUT_READ_STATUS, terminal_write=TERMINAL_OUT_WRITE_STATUS)
-        #self.thread = Thread(target=self.WriteToOutput)
+        self.thread = Thread(target=self.WriteToOutput)
         self.done = False
 
 if __name__ == "__main__":
